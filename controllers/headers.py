@@ -1,21 +1,14 @@
 from flask import request, jsonify
-import pandas as pd
+from utils.createDf import createDf
 
 def headers():
 
-    #Check if a file is uploaded
-    if "file" not in request.files or not request.files["file"]:
-        return("No file uploaded")
-
-    file=request.files["file"]
-
-    if (file.filename.endswith(".csv")):
-        df = pd.read_csv(file)
-    elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
-        df = pd.read_excel(file)
+    validity=createDf(request.files)
+    if not validity[0]:
+        return(validity[1])
     else:
-        return("Please send a valid file format")
-    
+        df = validity[1]
+
     return(jsonify({"headers":list(df.columns)}))
 
     
