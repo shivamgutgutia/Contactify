@@ -11,7 +11,7 @@ def headers():
 
     if (file.filename.endswith(".csv")):
         df = pd.read_csv(file)
-    elif (file.filename.endswith(".xlsx")):
+    elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
         df = pd.read_excel(file)
     else:
         return("Please send a valid file format")
