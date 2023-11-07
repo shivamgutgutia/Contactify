@@ -1,3 +1,2 @@
-__pycache__
-controllers/__pycache__
+*/__pycache__
 .env
