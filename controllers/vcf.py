@@ -32,7 +32,7 @@ def vcf():
     if request.form["removeLessThan10"]=="true" and "Phone Number" in headersMap:
         df = df[len(str(df[headersMap["Phone Number"]]))!=10]
 
-    if request.form["removeDuplicate"]=="true" and "Phone Number" in requiredHeaders:
+    if request.form["removeDuplicate"]=="true" and "Phone Number" in headersMap:
         df = df.drop_duplicates(subset=headersMap["Phone Number"],keep="first")
 
     vcfString = generateVcf(df, headersMap, split=(request.form["split"]=="true"))   
