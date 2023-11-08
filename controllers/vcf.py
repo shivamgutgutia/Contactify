@@ -1,26 +1,41 @@
 from flask import request
-import pandas as pd
-import json
+from utils.createDf import createDf
+from utils.vcfGenerator import generateVcf
 
 def vcf():
-    actualHeaders = []
-    requiredHeaders = request.form["heads"].split(",")
-    headersMap = request.form["headsmap"].split(",")
+    actualHeaders = [
+        "First Name",
+        "Last Name", 
+        "Middle Name", 
+        "Prefix", 
+        "Suffix", 
+        "Phone Number",
+        "E-Mail",
+        "Gender",
+    ]
 
-    file=request.files["file"]
-    
-    #Check if a file is uploaded
-    if "file" not in request.files or not request.files["file"]:
-        return("No file uploaded")
+    headersMap = dict(zip(
+        request.form["heads"].split(","),
+        request.form["headsmap"].split(",")
+    ))
 
-    file=request.files["file"]
-
-    if (file.filename.endswith(".csv")):
-        df = pd.read_csv(file)
-    elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
-        df = pd.read_excel(file)
+    validity=createDf(request.files)
+    if not validity[0]:
+        return(validity[1])
     else:
-        return("Please send a valid file format")
+        df = validity[1]
+
+    if request.form["removeWithoutNumber"]=="true" and "Phone Number" in headersMap:
+        df = df[str(df[headersMap["Phone Number"]])!=""]
+
+    #Less than 10 or not equal to 10 - must check
+    if request.form["removeLessThan10"]=="true" and "Phone Number" in headersMap:
+        df = df[len(str(df[headersMap["Phone Number"]]))!=10]
+
+    if request.form["removeDuplicate"]=="true" and "Phone Number" in requiredHeaders:
+        df = df.drop_duplicates(subset=headersMap["Phone Number"],keep="first")
+
+    vcfString = generateVcf(df, headersMap, split=(request.form["split"]=="true"))   
 
 
     
