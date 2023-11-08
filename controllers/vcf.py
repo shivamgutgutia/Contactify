@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, Response
 from utils.createDf import createDf
 from utils.vcfGenerator import generateVcf
 
@@ -41,7 +41,9 @@ def vcf():
         df = df.drop_duplicates(subset=headersMap["Phone Number"],keep="first")
 
     vcfString = generateVcf(df, headersMap, split=(request.form["splitVCF"]=="true"))   
-    return(vcfString)
+    response = Response(vcfString, content_type='text/vcard',headers={"Content-Disposition": "attachment; filename=contacts.vcf"})
+    #response.headers['Content-Disposition'] = 'attachment; filename=contacts.vcf'
+    return response
 
 
     
