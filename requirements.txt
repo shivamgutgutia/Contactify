@@ -2,4 +2,4 @@ Flask==3.0.0
 pandas==2.0.3
 vobject==0.9.6.1
 xlrd==2.0.1
-dotenv==1.0.0
+python-dotenv==1.0.0
