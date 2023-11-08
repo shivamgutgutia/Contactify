@@ -16,8 +16,11 @@ def vcf():
 
     headersMap = dict(zip(
         request.form["heads"].split(","),
-        request.form["headsmap"].split(",")
+        request.form["headsMap"].split(",")
     ))
+
+    if "First Name" not in headersMap:
+        return("The file must have atleast the first name field set")
 
     validity=createDf(request.files)
     if not validity[0]:
@@ -25,17 +28,20 @@ def vcf():
     else:
         df = validity[1]
 
+    df= df.astype(str)
+
     if request.form["removeWithoutNumber"]=="true" and "Phone Number" in headersMap:
-        df = df[str(df[headersMap["Phone Number"]])!=""]
+        df = df[df[headersMap["Phone Number"]] != "nan"]
 
     #Less than 10 or not equal to 10 - must check
     if request.form["removeLessThan10"]=="true" and "Phone Number" in headersMap:
-        df = df[len(str(df[headersMap["Phone Number"]]))!=10]
+        df = df[df[headersMap["Phone Number"]].str.len()==10]
 
     if request.form["removeDuplicate"]=="true" and "Phone Number" in headersMap:
         df = df.drop_duplicates(subset=headersMap["Phone Number"],keep="first")
 
-    vcfString = generateVcf(df, headersMap, split=(request.form["split"]=="true"))   
+    vcfString = generateVcf(df, headersMap, split=(request.form["splitVCF"]=="true"))   
+    return(vcfString)
 
 
     

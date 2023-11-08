@@ -9,7 +9,7 @@ def createDf(requestFiles):
         return False,"Please upload valid file format"
     
     if (file.filename.endswith(".csv")):
-        df = pd.read_csv(file)
+        df = pd.read_csv(file,dtype=str)
     elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
-        df = pd.read_excel(file)
+        df = pd.read_excel(file,dtype=str)
     return True,df
