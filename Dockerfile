@@ -1,10 +1,14 @@
-FROM python:3.11.5
+FROM ubuntu
 
-WORKDIR /usr/src/contactsGenerator
+RUN apt update
+RUN apt install python3-pip -y
 
-COPY . ./
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-EXPOSE 8080
-CMD ["python3" ,"app.py"]
+WORKDIR /app
+
+COPY requirements.txt /app/
+RUN pip3 install -r requirements.txt
+
+COPY . /app/
+EXPOSE 5000
+CMD ["python3","app.py"]
 

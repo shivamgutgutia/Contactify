@@ -11,5 +11,6 @@ app.config['MAX_CONTENT_LENGTH'] = 1024*1024*1024
 
 app.register_blueprint(router)
 
+
 if __name__ == "__main__":
-    app.run(port=os.getenv("PORT",5000))
+    app.run(host='0.0.0.0',port=os.getenv("PORT",5000))
