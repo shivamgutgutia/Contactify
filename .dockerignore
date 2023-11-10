@@ -1,5 +1,7 @@
-Dockerfile
+.env
 *.pyc
 *.pyd
 *.pyo
 __pycache__
+
+
