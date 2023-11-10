@@ -1,9 +1,12 @@
 import vobject
-import pandas as pd
 
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
-    vcard.add("fn").value = row.get(headers.get("First Name","Not Found"),"")+row.get(headers.get("Last Name","Not Found"),"")
+
+    fn = row.get(headers.get("First Name","Not Found"),"")+row.get(headers.get("Last Name","Not Found"),"")
+    if fn:
+        vcard.add("fn").value = fn
+
     vcard.add("n").value = vobject.vcard.Name(
         family=row.get(headers.get("Last Name","Not Found"),""),
         given=row.get(headers.get("First Name","Not Found"),""),
@@ -12,10 +15,13 @@ def generateVcard(row, headers, vCards):
         prefix=row.get(headers.get("Prefix","Not Found"),"")
     )
 
-    for phone in (row.get(headers.get("Phone Number","Not Found"),"")).split(","):
-        telephone = vcard.add("tel")
-        telephone.type_param = ["HOME"]
-        telephone.value = phone
+    phones = (row.get(headers.get("Phone Number","Not Found"),""))
+    if phones:
+        for phone in (row.get(headers.get("Phone Number","Not Found"),"")).split(","):
+            telephone = vcard.add("tel")
+            telephone.type_param = ["HOME"]
+            telephone.value = phone
+    
     vcard.add('version').value = '4.0'
     vCards.append(vcard.serialize())
 

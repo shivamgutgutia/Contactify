@@ -1,4 +1,5 @@
-import pandas as pd
+#import pandas as pd
+from pandas import read_csv, read_excel
 
 def createDf(requestFiles):
     if "file" not in requestFiles or not requestFiles["file"]:
@@ -9,7 +10,7 @@ def createDf(requestFiles):
         return False,"Please upload valid file format"
     
     if (file.filename.endswith(".csv")):
-        df = pd.read_csv(file,dtype=str)
+        df = read_csv(file,dtype=str)
     elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
-        df = pd.read_excel(file,dtype=str)
+        df = read_excel(file,dtype=str)
     return True,df
