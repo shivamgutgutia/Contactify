@@ -1,6 +1,7 @@
 from flask import request, Response
 from utils.createDf import createDf
 from utils.vcfGenerator import generateVcf
+import json
 
 
 def vcf():
@@ -15,21 +16,22 @@ def vcf():
         "Gender",
     ]'''
 
+    '''
     headersMap = dict(zip(
         request.form["heads"].split(","),
         request.form["headsMap"].split(",")
-    ))
-
-    if "First Name" not in headersMap:
-        return("The file must have atleast the first name field set",400)
-
+    )) 
+    '''
     validity=createDf(request.files)
     if not validity[0]:
         return(validity[1],400)
     else:
-        df = validity[1]
+        df = validity[1].astype(str)
 
-    df= df.astype(str)
+    headersMap = json.loads(request.form["headersMap"])
+
+    if "First Name" not in headersMap:
+        return("The file must have atleast the first name field set",400)
 
     if request.form["removeWithoutNumber"]=="true" and "Phone Number" in headersMap:
         df = df[df[headersMap["Phone Number"]] != "nan"]
