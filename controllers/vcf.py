@@ -2,8 +2,9 @@ from flask import request, Response
 from utils.createDf import createDf
 from utils.vcfGenerator import generateVcf
 
+
 def vcf():
-    actualHeaders = [
+    '''actualHeaders = [
         "First Name",
         "Last Name", 
         "Middle Name", 
@@ -12,7 +13,7 @@ def vcf():
         "Phone Number",
         "E-Mail",
         "Gender",
-    ]
+    ]'''
 
     headersMap = dict(zip(
         request.form["heads"].split(","),
@@ -20,11 +21,11 @@ def vcf():
     ))
 
     if "First Name" not in headersMap:
-        return("The file must have atleast the first name field set")
+        return("The file must have atleast the first name field set",400)
 
     validity=createDf(request.files)
     if not validity[0]:
-        return(validity[1])
+        return(validity[1],400)
     else:
         df = validity[1]
 
@@ -43,7 +44,7 @@ def vcf():
     vcfString = generateVcf(df, headersMap, split=(request.form["splitVCF"]=="true"))   
     response = Response(vcfString, content_type='text/vcard',headers={"Content-Disposition": "attachment; filename=contacts.vcf"})
     #response.headers['Content-Disposition'] = 'attachment; filename=contacts.vcf'
-    return response
+    return response,200
 
 
     
