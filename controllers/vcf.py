@@ -54,7 +54,7 @@ def vcf():
         response= make_response(vCardZip)
         response.headers["Content-Type"] = "application/zip"
         response.headers["Content-Disposition"] = "attachment; filename=Contacts.zip"
-        return response
+        return response,200
         
 
 
