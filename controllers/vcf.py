@@ -51,6 +51,7 @@ def vcf():
         return response,200
     else:
         vCardZip = generateVcf(df, headersMap, split=(request.form.get("splitVCF","")=="true"))
+        return vCardZip
         response = Response(vCardZip, content_type='application/zip',headers={"Content-Disposition": "attachment; filename=Contacts.zip"})
         return response,200
         
