@@ -1,5 +1,6 @@
 import vobject
-
+import zipfile
+import io
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
@@ -23,11 +24,23 @@ def generateVcard(row, headers, vCards):
             telephone.value = phone
     
     vcard.add('version').value = '4.0'
-    vCards.append(vcard.serialize())
+    vCards.append(vcard)
 
 def generateVcf(df, headers,split):
     vCards=[]
     df.apply(lambda row: generateVcard(row,headers,vCards),axis=1)
     if not split:
+        vCards = [vCard.serialize() for vCard in vCards]
         vcardString = "\n".join(vCards)
         return vcardString
+    else:
+        zipMemoryFile = io.BytesIO()
+        with zipfile.ZipFile(zipMemoryFile,"w") as zipFile:
+            for vCard in vCards:
+                textFile = io.StringIO(vCard.serialize())
+                zipFile.writestr(f"{vCard.fn.value} contact.vcf",textFile.getvalue())
+
+        zipMemoryFile.seek(0)
+        return zipMemoryFile.getvalue()
+
+
