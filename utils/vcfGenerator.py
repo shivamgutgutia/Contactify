@@ -17,8 +17,8 @@ def generateVcard(row, headers, vCards):
     )
 
     phones = (row.get(headers.get("Phone Number","Not Found"),""))
-    if phones:
-        for phone in (row.get(headers.get("Phone Number","Not Found"),"")).split(","):
+    for phone in phones.split(","):
+        if phone:
             telephone = vcard.add("tel")
             telephone.type_param = ["HOME"]
             telephone.value = phone
