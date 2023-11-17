@@ -1,12 +1,15 @@
 import vobject
 import zipfile
 import io
+import random
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
-    fn = row.get(headers.get("First Name","Not Found"),"")+row.get(headers.get("Last Name","Not Found"),"")
+    fn = row.get(headers.get("First Name","Not Found"),"")+" "+row.get(headers.get("Last Name","Not Found"),"")
     if fn:
         vcard.add("fn").value = fn
+    else:
+        vcard.add("fn").value = "Person "+str(random.randint(1000,9999))
 
     vcard.add("n").value = vobject.vcard.Name(
         family=row.get(headers.get("Last Name","Not Found"),""),
