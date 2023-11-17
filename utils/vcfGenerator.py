@@ -2,6 +2,7 @@ import vobject
 import zipfile
 import io
 import random
+from flask import request
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
@@ -15,8 +16,8 @@ def generateVcard(row, headers, vCards):
         family=row.get(headers.get("Last Name","Not Found"),""),
         given=row.get(headers.get("First Name","Not Found"),""),
         additional=row.get(headers.get("Middle Name","Not Found"),""),
-        suffix=row.get(headers.get("Suffix","Not Found"),""),
-        prefix=row.get(headers.get("Prefix","Not Found"),"")
+        suffix=request.form.get("suffix",""),
+        prefix=request.form.get("prefix","")
     )
 
     phones = (row.get(headers.get("Phone Number","Not Found"),""))

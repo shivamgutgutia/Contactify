@@ -13,7 +13,7 @@ def createDf(requestFiles):
         df = read_csv(file,dtype=str)
     elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
         df = read_excel(file,dtype=str)
-
+        
     if not len(df):
         return False,"Empty file uploaded"
     return True,df
