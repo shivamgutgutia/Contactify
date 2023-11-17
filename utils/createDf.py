@@ -13,6 +13,9 @@ def createDf(requestFiles):
         df = read_csv(file,dtype=str)
     elif (file.filename.endswith(".xlsx") or file.filename.endswith(".xls")):
         df = read_excel(file,dtype=str)
+
+    df = df.applymap(lambda x: x.strip() if isinstance(x,str) else "")
+    df = df.loc[~(df == "").all(axis=1)]
         
     if not len(df):
         return False,"Empty file uploaded"
