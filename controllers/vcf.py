@@ -34,7 +34,7 @@ def vcf():
         return("The file must have atleast the first name field set",400)
 
     if request.form.get("removeWithoutNumber","")=="true" and "Phone Number" in headersMap:
-        df = df[df[headersMap["Phone Number"]] != "nan"]
+        df = df[df[headersMap["Phone Number"]] != ""]
 
     #Less than 10 or not equal to 10 - must check
     if request.form.get("removeLessThan10","")=="true" and "Phone Number" in headersMap:
