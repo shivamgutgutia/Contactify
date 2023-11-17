@@ -1,4 +1,3 @@
-#import pandas as pd
 from pandas import read_csv, read_excel
 
 def createDf(requestFiles):
