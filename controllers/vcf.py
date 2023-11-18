@@ -56,16 +56,15 @@ def vcf():
             return response,200
         
     else:
-        vcfString = generateVcf(df.iloc[1,:],headersMap,split=False)
+        vcfString = generateVcf(df.iloc[[0]].copy(),headersMap,split=False)
         vcard = vobject.readOne(vcfString)
 
-        jcard = {
-            "Name": getattr(vcard,"fn",""),
-            "Phone Number(s)": getattr(vcard,"tel",""),
-            "E-Mail": getattr(vcard,"email","")
-        }
-        response = Response(jsonify(jcard), content_type='application/json')
-        return response,200
+        jcard = jsonify({
+            "Name": vcard.fn.value if hasattr(vcard, 'fn') else "",
+            "Phone Number(s)": vcard.tel.value if hasattr(vcard, 'tel') else "",
+            "E-Mail": vcard.email.value if hasattr(vcard, 'email') else ""
+        })
+        return jcard
         
 
 
