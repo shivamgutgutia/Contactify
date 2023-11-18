@@ -6,7 +6,8 @@ from flask import request
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
-    fn = row.get(headers.get("First Name","Not Found"),"")+" "+row.get(headers.get("Last Name","Not Found"),"")
+    fn = row.get(headers.get("Prefix","Not Found"),"") + " " +row.get(headers.get("First Name","Not Found"),"")+" "+row.get(headers.get("Middle Name","Not Found"),"")+" "+\
+        row.get(headers.get("Last Name","Not Found"),"")+" "+row.get(headers.get("Suffix","Not Found"),"")
     if fn:
         vcard.add("fn").value = fn
     else:
@@ -26,6 +27,13 @@ def generateVcard(row, headers, vCards):
             telephone = vcard.add("tel")
             telephone.type_param = ["HOME"]
             telephone.value = phone
+
+    emails = (row.get(headers.get("E-Mail","Not Found"),""))
+    for email in emails.split(","):
+        if email:
+            mail = vcard.add("email")
+            mail.type_param = ["HOME"]
+            mail.value = email
     
     vcard.add('version').value = '4.0'
     vCards.append(vcard)

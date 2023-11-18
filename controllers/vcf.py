@@ -1,7 +1,8 @@
-from flask import request, Response, make_response
+from flask import request, Response, jsonify
 from utils.createDf import createDf
 from utils.vcfGenerator import generateVcf
 import json
+import vobject
 
 
 def vcf():
@@ -43,16 +44,34 @@ def vcf():
     if request.form.get("removeDuplicate","")=="true" and "Phone Number" in headersMap:
         df = df.drop_duplicates(subset=headersMap["Phone Number"],keep="first")
 
-
-    if request.form.get("splitVCF","")=="false":
-        vcfString = generateVcf(df, headersMap, split=(request.form.get("splitVCF","")=="true"))   
-        response = Response(vcfString, content_type='text/vcard',headers={"Content-Disposition": "attachment; filename=contacts.vcf"})
-        #response.headers['Content-Disposition'] = 'attachment; filename=contacts.vcf'
-        return response,200
+    if request.form.get("sample","")=="false":
+        if request.form.get("splitVCF","")=="false":
+            vcfString = generateVcf(df, headersMap, split=(request.form.get("splitVCF","")=="true"))   
+            response = Response(vcfString, content_type='text/vcard',headers={"Content-Disposition": "attachment; filename=contacts.vcf"})
+            #response.headers['Content-Disposition'] = 'attachment; filename=contacts.vcf'
+            return response,200
+        else:
+            vCardZip = generateVcf(df, headersMap, split=(request.form.get("splitVCF","")=="true"))
+            response = Response(vCardZip, content_type='application/zip',headers={"Content-Disposition": "attachment; filename=Contacts.zip"})
+            return response,200
+        
     else:
-        vCardZip = generateVcf(df, headersMap, split=(request.form.get("splitVCF","")=="true"))
-        response = Response(vCardZip, content_type='application/zip',headers={"Content-Disposition": "attachment; filename=Contacts.zip"})
+        vcfString = generateVcf(df.iloc[1,:],headersMap,split=False)
+        vcard = vobject.readOne(vcfString)
+
+        jcard = {
+            "Name": getattr(vcard,"fn",""),
+            "Phone Number(s)": getattr(vcard,"tel",""),
+            "E-Mail": getattr(vcard,"email","")
+        }
+        response = Response(jsonify(jcard), content_type='application/json')
         return response,200
+        
+
+
+
+    
+
         
 
 
