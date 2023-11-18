@@ -13,8 +13,7 @@ def vcf():
         "Prefix", 
         "Suffix", 
         "Phone Number",
-        "E-Mail",
-        "Gender",
+        "E-Mail",,
     ]'''
 
     '''
