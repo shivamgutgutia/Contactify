@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -8,6 +8,10 @@ load_dotenv()
 app= Flask(__name__)
 CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 1024*1024*1024
+
+@app.errorhandler(Exception)
+def errorHandler(error):
+    return jsonify({"error":error}),500
 
 app.register_blueprint(router)
 
