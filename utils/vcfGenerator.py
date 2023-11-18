@@ -21,16 +21,18 @@ def generateVcard(row, headers, vCards):
         prefix=request.form.get("prefix","")
     )
 
-    phones = (row.get(headers.get("Phone Number","Not Found"),""))
-    for phone in phones.split(","):
-        if phone:
+    fields=headers.get("Phone Number","")
+    for field in fields.split(","):
+        if field:
+            phone = row.get(field,"")
             telephone = vcard.add("tel")
             telephone.type_param = ["HOME"]
             telephone.value = phone
 
-    emails = (row.get(headers.get("E-Mail","Not Found"),""))
-    for email in emails.split(","):
-        if email:
+    fields=headers.get("E-Mail","")
+    for field in fields.split(","):
+        if field:
+            email = row.get(field,"")
             mail = vcard.add("email")
             mail.type_param = ["HOME"]
             mail.value = email
@@ -40,6 +42,7 @@ def generateVcard(row, headers, vCards):
 
 def generateVcf(df, headers,split):
     vCards=[]
+    print(df.columns)
     df.apply(lambda row: generateVcard(row,headers,vCards),axis=1)
     if not split:
         vCards = [vCard.serialize() for vCard in vCards]

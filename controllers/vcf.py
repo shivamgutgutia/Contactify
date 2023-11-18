@@ -61,8 +61,8 @@ def vcf():
 
         jcard = jsonify({
             "Name": vcard.fn.value if hasattr(vcard, 'fn') else "",
-            "Phone Number(s)": vcard.tel.value if hasattr(vcard, 'tel') else "",
-            "E-Mail": vcard.email.value if hasattr(vcard, 'email') else ""
+            "Phone Number(s)": "/".join([tel.value for tel in vcard.tel_list]) if hasattr(vcard, 'tel') else "",
+            "E-Mail": "/".join([email.value for email in vcard.email_list]) if hasattr(vcard, 'email') else ""
         })
         return jcard
         
