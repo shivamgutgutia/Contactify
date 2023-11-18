@@ -22,20 +22,20 @@ def generateVcard(row, headers, vCards):
     )
 
     fields=headers.get("Phone Number","")
-    for field in fields.split(","):
-        if field:
-            phone = row.get(field,"")
-            telephone = vcard.add("tel")
-            telephone.type_param = ["HOME"]
-            telephone.value = phone
+    fields = fields.split(",") if fields else []
+    for field in fields:
+        phone = row.get(field,"")
+        telephone = vcard.add("tel")
+        telephone.type_param = ["HOME"]
+        telephone.value = phone
 
     fields=headers.get("E-Mail","")
+    fields = fields.split(",") if fields else []
     for field in fields.split(","):
-        if field:
-            email = row.get(field,"")
-            mail = vcard.add("email")
-            mail.type_param = ["HOME"]
-            mail.value = email
+        email = row.get(field,"")
+        mail = vcard.add("email")
+        mail.type_param = ["HOME"]
+        mail.value = email
     
     vcard.add('version').value = '4.0'
     vCards.append(vcard)
