@@ -1,9 +1,9 @@
 from flask import send_file
 
-def sample():
+def template():
     return send_file(
-        r".\utils\samples.zip",
+        r".\utils\templates.zip",
         mimetype="application/zip",
         as_attachment=True,
-        download_name="Sample Files.zip"
+        download_name="Template Files.zip"
     )
