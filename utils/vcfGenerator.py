@@ -6,8 +6,7 @@ from flask import request
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
-    fnParameters = [row.get(headers.get(string,"Not Found"),"") for string in ["prefix","First Name","Middle Name","Last Name","suffix"]]
-    fn = "".join(fnParameters)
+    fn = row.get(headers.get("First Name","NA"),"")+row.get(headers.get("Last Name","NA"),"")
     if fn:
         vcard.add("fn").value = fn
     else:
@@ -44,7 +43,6 @@ def generateVcard(row, headers, vCards):
 
 def generateVcf(df, headers,split):
     vCards=[]
-    print(df.columns)
     df.apply(lambda row: generateVcard(row,headers,vCards),axis=1)
     if not split:
         vCards = [vCard.serialize() for vCard in vCards]
