@@ -11,7 +11,7 @@ def generateVcard(row, headers, vCards):
     if fn:
         vcard.add("fn").value = fn
     else:
-        vcard.add("fn").value = "N"
+        vcard.add("fn").value = "N/A"
 
     vcard.add("n").value = vobject.vcard.Name(
         family=row.get(headers.get("Last Name","Not Found"),""),
