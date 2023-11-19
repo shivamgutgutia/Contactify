@@ -6,18 +6,20 @@ from flask import request
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
-    fn = row.get(headers.get("First Name","NA"),"")+row.get(headers.get("Last Name","NA"),"")
+    fnParameters = [row.get(headers.get(string,""),"") for string in ["First Name","Middle Name","Last Name"]]
+    fnParameters=request.form.get("Prefix",[])+fnParameters+request.form.get("Suffix",[])
+    fn = " ".join(filter(None,fnParameters))
     if fn:
         vcard.add("fn").value = fn
     else:
         vcard.add("fn").value = "N/A"
 
     vcard.add("n").value = vobject.vcard.Name(
-        family=row.get(headers.get("Last Name","Not Found"),""),
-        given=row.get(headers.get("First Name","Not Found"),""),
-        additional=row.get(headers.get("Middle Name","Not Found"),""),
-        suffix=request.form.get("suffix",""),
-        prefix=request.form.get("prefix","")
+        family=row.get(headers.get("Last Name",""),""),
+        given=row.get(headers.get("First Name",""),""),
+        additional=row.get(headers.get("Middle Name",""),""),
+        suffix=request.form.get("Suffix",""),
+        prefix=request.form.get("Prefix","")
     )
 
     fields=headers.get("Phone Number","")

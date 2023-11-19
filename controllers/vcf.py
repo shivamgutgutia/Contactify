@@ -65,7 +65,11 @@ def vcf():
         vcard = vobject.readOne(vcfString)
 
         jcard = jsonify({
-            "Name": vcard.fn.value if hasattr(vcard, 'fn') else "",
+            "Prefix":vcard.n.value.prefix,
+            "First Name":vcard.n.value.given,
+            "Middle Name":vcard.n.value.additional,
+            "Last Name":vcard.n.value.family,
+            "Suffix":vcard.n.value.suffix,
             "Phone Number(s)": "/".join([tel.value for tel in vcard.tel_list]) if hasattr(vcard, 'tel') else "",
             "E-Mail": "/".join([email.value for email in vcard.email_list]) if hasattr(vcard, 'email') else ""
         })
