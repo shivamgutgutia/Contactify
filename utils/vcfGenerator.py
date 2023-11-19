@@ -1,7 +1,7 @@
 import vobject
 import zipfile
 import io
-import random
+#import random
 from flask import request
 def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
@@ -11,7 +11,7 @@ def generateVcard(row, headers, vCards):
     if fn:
         vcard.add("fn").value = fn
     else:
-        vcard.add("fn").value = "Person "+str(random.randint(1000,9999))
+        vcard.add("fn").value = "N"
 
     vcard.add("n").value = vobject.vcard.Name(
         family=row.get(headers.get("Last Name","Not Found"),""),
