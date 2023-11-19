@@ -7,7 +7,9 @@ def generateVcard(row, headers, vCards):
     vcard = vobject.vCard()
 
     fnParameters = [row.get(headers.get(string,""),"") for string in ["First Name","Middle Name","Last Name"]]
-    fnParameters=request.form.get("Prefix",[])+fnParameters+request.form.get("Suffix",[])
+    prefix = [request.form.get("Prefix")] if "Prefix" in request.form else []
+    suffix = [request.form.get("Suffix")] if "Suffix" in request.form else []
+    fnParameters=prefix+fnParameters+suffix
     fn = " ".join(filter(None,fnParameters))
     if fn:
         vcard.add("fn").value = fn
