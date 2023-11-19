@@ -1,0 +1,70 @@
+steps:
+  # Delete previous containers based on the image (if any running)
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker ps -a | grep 'gcr.io/shivam-contacts-generator/github.com/shivamgutgutia/contactsgeneratorbackend' | awk '{print $1}' | xargs -r docker rm -f
+
+  # Delete previous images
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker images -a | grep 'gcr.io/shivam-contacts-generator/github.com/shivamgutgutia/contactsgeneratorbackend' | awk '{print $3}' | xargs -r docker rmi -f
+
+  # Build the new image with the latest commit SHA as a tag
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/shivam-contacts-generator/github.com/shivamgutgutia/contactsgeneratorbackend:$COMMIT_SHA'
+      - '-f'
+      - 'Dockerfile'
+      - '.'
+
+  # Push the new image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/shivam-contacts-generator/github.com/shivamgutgutia/contactsgeneratorbackend:$COMMIT_SHA'
+
+  # Fetch the latest commit SHA from environment variables
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        COMMIT_SHA=$(echo $COMMIT_SHA)
+
+  # Deploy the new revision to Cloud Run using the updated image with the latest commit SHA
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run deploy contacts-generator-backend-continuous \
+          --image=gcr.io/shivam-contacts-generator/github.com/shivamgutgutia/contactsgeneratorbackend:$COMMIT_SHA \
+          --region=asia-south1 \
+          --project=shivam-contacts-generator \
+          && gcloud run services update-traffic contacts-generator-backend-continuous --to-latest
+
+  # Get the latest revision name
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        LATEST_REVISION=$(gcloud run services describe contacts-generator-backend-continuous --platform=managed --region=asia-south1 --format='value(status.latestRevisionName)')
+
+  # Delete older revisions
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run revisions list --platform=managed --region=asia-south1 --format='value(REVISION)%0A' \
+        | grep -v $LATEST_REVISION \
+        | xargs -I{} gcloud run revisions delete {} --platform=managed --region=asia-south1 --quiet
