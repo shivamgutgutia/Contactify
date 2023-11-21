@@ -73,7 +73,7 @@ def vcf():
             "Phone Number(s)": "/".join([tel.value for tel in vcard.tel_list]) if hasattr(vcard, 'tel') else "",
             "E-Mail": "/".join([email.value for email in vcard.email_list]) if hasattr(vcard, 'email') else ""
         })
-        return jcard
+        return jcard, 200
         
 
 

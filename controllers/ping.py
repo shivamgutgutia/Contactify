@@ -1,2 +1,2 @@
 def ping():
-    return("The server is healthy")
+    return "The server is healthy",200

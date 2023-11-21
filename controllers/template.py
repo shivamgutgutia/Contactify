@@ -11,4 +11,4 @@ def template():
         mimetype="application/zip",
         as_attachment=True,
         download_name="Template Files.zip"
-    )
+    ),200
