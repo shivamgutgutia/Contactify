@@ -15,9 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: |
-        IMAGE_TAG=$(git rev-parse --short HEAD) # Get the short commit SHA
-        docker build . --file Dockerfile --tag shivamgutgutia/vcfgenerator:$IMAGE_TAG
+      run: docker build . --file Dockerfile --tag shivamgutgutia/vcfgenerator
 
     - name: Push Docker image to Docker Hub
-      run: docker push shivamgutgutia/vcfgenerator:$IMAGE_TAG
+      run: docker push shivamgutgutia/vcfgenerator
