@@ -6,6 +6,7 @@ from routers import router
 import traceback
 load_dotenv()
 
+
 app= Flask(__name__)
 CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 1024*1024*1024
