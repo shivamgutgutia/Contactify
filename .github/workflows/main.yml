@@ -1,0 +1,48 @@
+name: Deploy to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Build and push Docker image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: shivamgutgutia/contactify:latest
+
+    - name: Setup gcloud CLI
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: shivam-contacts-generator
+        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy contacts-generator-backend-continuous \
+          --image shivamgutgutia/contactify:latest \
+          --region asia-south1 \
+          --project=shivam-contacts-generator \
+          && gcloud run services update-traffic contacts-generator-backend-continuous --to-latest --region=asia-south1\
+          --platform managed
