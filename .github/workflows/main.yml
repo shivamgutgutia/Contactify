@@ -33,7 +33,7 @@ jobs:
         tags: shivamgutgutia/contactify:latest
 
     - name: Setup gcloud CLI
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: shivam-contacts-generator
         service_account_key: ${{ secrets.GCLOUD_AUTH }}
