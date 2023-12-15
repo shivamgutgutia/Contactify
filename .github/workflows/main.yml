@@ -35,9 +35,8 @@ jobs:
     - name: Setup gcloud CLI
       uses: google-github-actions/auth@v2
       with:
-        credentials: ${{ secrets.GCLOUD_AUTH_KEY }}
+        credentials_json: ${{ secrets.GCLOUD_AUTH }}
         project_id: shivam-contacts-generator
-        run_as: gutgutia159@gmail.com
 
     - name: Deploy to Cloud Run
       run: |
