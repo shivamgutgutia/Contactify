@@ -4,7 +4,7 @@ import os
 baseDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def template():
-    if request.form.get("filetype","") == "xlsx":
+    if request.args.get("filetype","") == "xlsx":
         filePath = os.path.join(baseDir, 'files', 'Template - Excel Workbook.xlsx')
         return send_file(
             filePath,
@@ -12,7 +12,7 @@ def template():
             as_attachment=True,
             download_name="Template - Excel Workbook.xlsx"
         ),200
-    elif request.form.get("filetype","") == "xls":
+    elif request.args.get("filetype","") == "xls":
         filePath = os.path.join(baseDir, 'files', 'Template - Excel.xls')
         return send_file(
             filePath,
@@ -21,7 +21,7 @@ def template():
             download_name="Template - Excel.xls"
         ),200
     
-    elif request.form.get("filetype","") == "csv":
+    elif request.args.get("filetype","") == "csv":
         filePath = os.path.join(baseDir, 'files', 'Template - CSV.csv')
         return send_file(
             filePath,
@@ -30,7 +30,7 @@ def template():
             download_name="Template - CSV.csv"
         ),200
     
-    elif request.form.get("filetype","") == "ods":
+    elif request.args.get("filetype","") == "ods":
         filePath = os.path.join(baseDir, 'files', 'Template - ODS.ods')
         return send_file(
             filePath,
