@@ -8,7 +8,7 @@ load_dotenv()
 
 app= Flask(__name__)
 #CORS(app)
-CORS(app, resources={r"/*": {"origins": "https://www.google.com", "methods": ["GET", "POST"]}})
+CORS(app, resources={r"/*": {"origins": "https://contactify.codechefvit.com", "methods": ["GET", "POST"]}})
 app.config['MAX_CONTENT_LENGTH'] = 1024*1024*1024
 
 
