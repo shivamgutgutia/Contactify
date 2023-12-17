@@ -25,33 +25,50 @@ The Contact File Backend Service offers a seamless solution for users to upload 
 
 Follow these steps to set up and run the Contact File Backend Service locally:
 
-1. **Clone the Repository**
-   - Clone the repository.
-     ```bash
-     git clone https://github.com/shivamgutgutia/contactsGeneratorBackend.git
-     ```
-   - Navigate to the cloned directory and run
-     ```bash
-     cd contactsGeneratorBackend
-     ```
+1. Local Installation
 
-2. **Install Dependencies**
-   - Install all required dependencies for running the server on local machine
-     ```bash
-     pip3 install -r requirements.txt
-     ```
+      1. **Clone the Repository**
+         - Clone the repository.
+           ```bash
+           git clone https://github.com/shivamgutgutia/contactsGeneratorBackend.git
+           ```
+         - Navigate to the cloned directory and run
+           ```bash
+           cd contactsGeneratorBackend
+           ```
+      
+      2. **Install Dependencies**
+         - Install all required dependencies for running the server on local machine
+           ```bash
+           pip3 install -r requirements.txt
+           ```
+      
+      3. **Configuration**
+         - Create a `.env` file in the root directory.
+         - Define environment variables such as:
+           - `PORT=5000`
+      
+      4. **Start the Server**
+         - Start the backend service
+           ```bash
+           python3 app.py
+           ```
+         - The service will be running on `http://localhost:5000` by default.
+        
+2. Docker Installation
 
-3. **Configuration**
-   - Create a `.env` file in the root directory.
-   - Define environment variables such as:
-     - `PORT=5000`
-
-4. **Start the Server**
-   - Start the backend service
-     ```bash
-     python3 app.py
-     ```
-   - The service will be running on `http://localhost:5000` by default.
+      1. **Pull image**
+         - Pull the docker image from Docker Hub
+           ```bash
+           docker pull shivamgutgutia/contactify:latest
+           ```
+      2. **Run Container**
+         - Create and run a container using the image pulled
+           ```bash
+           docker run -d -p 5000:5000 shivamgutgutia/contactify:latest
+           ```
+         - The service will be running on `http://localhost:5000`.
+   
 
 ## API Documentation
 
