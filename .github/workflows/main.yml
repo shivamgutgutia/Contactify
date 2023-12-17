@@ -40,9 +40,9 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy contacts-generator-backend-continuous \
+        gcloud run deploy contactify-backend \
           --image shivamgutgutia/contactify:latest \
           --region asia-south1 \
           --project=shivam-contacts-generator \
-          && gcloud run services update-traffic contacts-generator-backend-continuous --to-latest --region=asia-south1\
+          && gcloud run services update-traffic contactify-backend --to-latest --region=asia-south1\
           --platform managed
