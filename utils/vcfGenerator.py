@@ -20,7 +20,7 @@ def generateVcard(row, headers, vCards):
         family=row.get(headers.get("Last Name",""),""),
         given=row.get(headers.get("First Name",""),""),
         additional=row.get(headers.get("Middle Name",""),""),
-        suffix=request.form.get("Suffix",""),
+        suffix=request.form.get("Suffix","")+" "+str(row.name+1) if request.form.get("autoIncrement","") == "true" else request.form.get("Prefix",""),
         prefix=request.form.get("Prefix","")
     )
 
