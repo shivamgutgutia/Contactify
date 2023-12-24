@@ -32,22 +32,24 @@ def vcf():
 
     if "First Name" not in headersMap:
         return("The file must have atleast the first name field set",400)
+    
+    if "Phone Number" in headersMap:
 
-    if request.form.get("removeWithoutNumber","")=="true" and "Phone Number" in headersMap:
-        columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
-        if columns:
-            mask = df[columns].apply(lambda x: all(x == ""), axis=1)
-            df = df[~mask]
+        if request.form.get("removeWithoutNumber","")=="true":
+            columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
+            if columns:
+                mask = df[columns].apply(lambda x: all(x == ""), axis=1)
+                df = df[~mask]
 
-    #Less than 10 or not equal to 10 - must check
-    if request.form.get("removeLessThan10","")=="true" and "Phone Number" in headersMap:
-        columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
-        for column in columns:
-            df[column]=df[column].apply(lambda x: x if len(x)>=10 else "")
+        #Less than 10 or not equal to 10 - must check
+        if request.form.get("removeLessThan10","")=="true":
+            columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
+            for column in columns:
+                df[column]=df[column].apply(lambda x: x if len(x)>=10 else "")
 
-    if request.form.get("removeDuplicate","")=="true" and "Phone Number" in headersMap:
-        columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
-        df = df.drop_duplicates(subset=columns,keep="first") if columns else df
+        if request.form.get("removeDuplicate","")=="true":
+            columns = headersMap["Phone Number"].split(",") if headersMap["Phone Number"] else []
+            df = df.drop_duplicates(subset=columns,keep="first") if columns else df
 
     if request.form.get("sample","")=="false":
         if request.form.get("splitVCF","")=="false":
