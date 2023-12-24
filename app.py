@@ -1,9 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from routers import router
-import traceback
 load_dotenv()
 
 

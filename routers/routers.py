@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.index import *
+from controllers import *
 router = Blueprint('router', __name__)
 
 router.add_url_rule('/', 'home', home,methods=["GET"])

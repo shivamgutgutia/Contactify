@@ -1,6 +1,6 @@
 from flask import request, Response, jsonify
-from utils.createDf import createDf
-from utils.vcfGenerator import generateVcf
+from utils import createDf
+from utils import generateVcf
 import json
 import vobject
 
@@ -71,7 +71,8 @@ def vcf():
             "Last Name":vcard.n.value.family,
             "Suffix":vcard.n.value.suffix,
             "Phone Number(s)": "/".join([tel.value for tel in vcard.tel_list]) if hasattr(vcard, 'tel') else "",
-            "E-Mail": "/".join([email.value for email in vcard.email_list]) if hasattr(vcard, 'email') else ""
+            "E-Mail": "/".join([email.value for email in vcard.email_list]) if hasattr(vcard, 'email') else "",
+            "Gender":vcard.gender.value
         })
         return jcard, 200
         
