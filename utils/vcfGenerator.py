@@ -33,7 +33,7 @@ def generateVcard(row, headers, vCards):
     fields = fields.split(",") if fields else []
     for field in fields:
         phone = row.get(field,"")
-        if phone:
+        if phone and phone.isnumeric():
             telephone = vcard.add("tel")
             telephone.type_param = ["HOME"]
             telephone.value = phone
