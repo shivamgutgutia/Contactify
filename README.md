@@ -5,7 +5,7 @@ The Contact File Backend Service offers a seamless solution for users to upload 
 ## Features
 
 ### File Upload Prompt
-- Enables users to upload contact files in various formats (CSV, XLSX, XLS) effortlessly.
+- Enables users to upload contact files in various formats (CSV, XLSX, XLS, ODS) effortlessly.
 
 ### Automatic Header Extraction
 - Identifies and extracts headers from uploaded files to assist in contact data organization.
@@ -30,11 +30,11 @@ Follow these steps to set up and run the Contact File Backend Service locally:
       1. **Clone the Repository**
          - Clone the repository.
            ```bash
-           git clone https://github.com/shivamgutgutia/contactsGeneratorBackend.git
+           git clone https://github.com/shivamgutgutia/Contactify.git
            ```
          - Navigate to the cloned directory and run
            ```bash
-           cd contactsGeneratorBackend
+           cd Contactify
            ```
       
       2. **Install Dependencies**
@@ -51,7 +51,7 @@ Follow these steps to set up and run the Contact File Backend Service locally:
       4. **Start the Server**
          - Start the backend service
            ```bash
-           python3 app.py
+           flask run
            ```
          - The service will be running on `http://localhost:5000` by default.
         
