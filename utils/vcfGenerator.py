@@ -23,7 +23,7 @@ def generateVcard(row, headers, vCards):
         family=row.get(headers.get("Last Name",""),""),
         given=row.get(headers.get("First Name",""),""),
         additional=row.get(headers.get("Middle Name",""),""),
-        suffix=request.form.get("Suffix","")+" "+str(row.name+1) if request.form.get("autoIncrement","") == "true" else request.form.get("Prefix",""),
+        suffix=request.form.get("Suffix","")+" "+str(row.name+1) if request.form.get("autoIncrement","") == "true" else request.form.get("Suffix",""),
         prefix=request.form.get("Prefix","")
     )
 
@@ -33,7 +33,7 @@ def generateVcard(row, headers, vCards):
     fields = fields.split(",") if fields else []
     for field in fields:
         phone = row.get(field,"")
-        if phone and phone.isnumeric():
+        if phone:
             telephone = vcard.add("tel")
             telephone.type_param = ["HOME"]
             telephone.value = phone
