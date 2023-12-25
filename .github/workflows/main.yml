@@ -3,7 +3,7 @@ name: Deploy to Google Cloud Run
 on:
   push:
     branches:
-      - deploy
+      - main
 
 jobs:
   setup-build-publish-deploy:
