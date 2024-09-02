@@ -11,8 +11,6 @@ def createDf(requestFiles):
         df = read_excel(file,dtype=str)
     elif (file.filename.endswith(".ods")):
         df = read_excel(file,engine="odf",dtype=str)
-    elif file.filename.endswith(".json"):
-        df = read_json(file, dtype=str)
     else:
         return False,"Please upload valid file format"
 
